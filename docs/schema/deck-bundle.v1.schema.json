@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://recallio.local/schema/deck-bundle.v1.schema.json",
+  "title": "Recallio deck bundle v1",
+  "description": "Format impor/ekspor Recallio. Sumber kebenaran validasi adalah src/core/schema.ts (Zod); berkas ini untuk autocomplete di editor eksternal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "decks"],
+  "properties": {
+    "schema": { "const": "recallio.deck-bundle" },
+    "version": { "const": 1 },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "decks": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/deck" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$", "minLength": 1, "maxLength": 64 },
+    "deck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 500, "default": "" },
+        "cards": { "type": "array", "maxItems": 5000, "default": [], "items": { "$ref": "#/$defs/card" } }
+      }
+    },
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["front", "back"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "front": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "back": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "hint": { "type": "string", "maxLength": 500, "default": "" },
+        "tags": {
+          "type": "array",
+          "maxItems": 20,
+          "default": [],
+          "items": { "type": "string", "minLength": 1, "maxLength": 32, "pattern": "^[^,]+$" }
+        },
+        "schedule": { "$ref": "#/$defs/schedule" }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["due", "stability", "difficulty", "state", "reps", "lapses"],
+      "properties": {
+        "due": { "type": "string", "format": "date-time" },
+        "stability": { "type": "number", "minimum": 0 },
+        "difficulty": { "type": "number", "minimum": 0, "maximum": 10 },
+        "state": { "type": "integer", "minimum": 0, "maximum": 3, "description": "0 New, 1 Learning, 2 Review, 3 Relearning" },
+        "reps": { "type": "integer", "minimum": 0 },
+        "lapses": { "type": "integer", "minimum": 0 },
+        "scheduledDays": { "type": "number", "minimum": 0, "default": 0 },
+        "learningSteps": { "type": "integer", "minimum": 0, "default": 0 },
+        "lastReview": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

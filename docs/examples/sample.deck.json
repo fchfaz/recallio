@@ -1,0 +1,43 @@
+{
+  "schema": "recallio.deck-bundle",
+  "version": 1,
+  "decks": [
+    {
+      "name": "Contoh: Kosakata Jepang Dasar",
+      "description": "Deck contoh untuk mencoba alur belajar.",
+      "cards": [
+        { "front": "こんにちは", "back": "Halo / selamat siang", "hint": "Sapaan siang hari", "tags": ["sapaan", "n5"] },
+        { "front": "ありがとう", "back": "Terima kasih", "tags": ["sapaan", "n5"] },
+        { "front": "水 (みず)", "back": "Air", "tags": ["benda", "n5"] }
+      ]
+    },
+    {
+      "id": "deck-web",
+      "name": "Dasar Web",
+      "cards": [
+        {
+          "id": "card-http-200",
+          "front": "Arti status HTTP 200?",
+          "back": "OK — permintaan berhasil.",
+          "tags": ["http"]
+        },
+        {
+          "id": "card-http-404",
+          "front": "Arti status HTTP 404?",
+          "back": "Not Found — sumber daya tidak ditemukan.",
+          "tags": ["http"],
+          "schedule": {
+            "due": "2026-11-03T08:00:00Z",
+            "stability": 6.2,
+            "difficulty": 5.1,
+            "state": 2,
+            "reps": 3,
+            "lapses": 0,
+            "scheduledDays": 7,
+            "lastReview": "2026-10-27T08:00:00Z"
+          }
+        }
+      ]
+    }
+  ]
+}
