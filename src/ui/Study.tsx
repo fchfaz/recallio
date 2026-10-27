@@ -129,7 +129,7 @@ export function Study({ deckId }: { deckId?: string }) {
                   <div className="face-text">{current.front}</div>
                   {current.hint &&
                     (showHint ? (
-                      <div className="hint">💡 {current.hint}</div>
+                      <div className="hint">Petunjuk: {current.hint}</div>
                     ) : (
                       <button
                         className="btn btn-ghost btn-sm"

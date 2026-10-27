@@ -35,7 +35,7 @@ export function Dashboard() {
       <header className="page-head">
         <div>
           <h1>Hari ini</h1>
-          <p className="muted">Ulangi tepat waktu — FSRS mengatur jadwalnya.</p>
+          <p className="muted">Ulangi tepat waktu. FSRS mengatur jadwalnya.</p>
         </div>
         <button className="btn btn-primary" onClick={() => setCreating(true)}>
           <Icon name="plus" size={16} /> Deck baru

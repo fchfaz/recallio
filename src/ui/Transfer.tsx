@@ -125,7 +125,7 @@ export function Transfer() {
           ) : result.ok ? (
             <>
               <div className="ok-line">
-                <Icon name="check" size={16} /> Valid — {result.stats.decks} deck, {result.stats.cards} kartu
+                <Icon name="check" size={16} /> Valid: {result.stats.decks} deck, {result.stats.cards} kartu
                 {result.stats.withSchedule > 0 && `, ${result.stats.withSchedule} dengan jadwal`}
               </div>
               {result.warnings.length > 0 && (
