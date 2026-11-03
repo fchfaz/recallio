@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+}
+
+/* Flashcard 3D perspective & flip */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Cloze deletion highlight styling */
+.cloze-bracket {
+  color: #6366f1;
+  font-weight: 700;
+  background-color: rgba(99, 102, 241, 0.12);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  border-bottom: 2px solid #6366f1;
+}
+
+.cloze-hidden {
+  display: inline-block;
+  min-width: 3.5rem;
+  background-color: rgba(99, 102, 241, 0.18);
+  color: #4f46e5;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  border-bottom: 2px dashed #4f46e5;
+}
+
+.dark .cloze-hidden {
+  background-color: rgba(129, 140, 248, 0.22);
+  color: #a5b4fc;
+  border-bottom-color: #818cf8;
+}

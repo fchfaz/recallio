@@ -1,0 +1,6 @@
+{
+  "name": "Recallio",
+  "description": "Modern Spaced Repetition Learning App — Anki-compatible, FSRS-powered, offline-first flashcard PWA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

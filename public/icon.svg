@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#F1F5F9" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EC4899" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#1E1B4B" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Subtle Inner Aura -->
+  <circle cx="256" cy="230" r="180" fill="url(#glow)" opacity="0.15" filter="blur(40px)" />
+
+  <!-- Back Card (Tilted) -->
+  <g transform="rotate(-8 256 260)" filter="url(#shadow)">
+    <rect x="120" y="110" width="272" height="300" rx="24" fill="#E2E8F0" opacity="0.5" stroke="#CBD5E1" stroke-width="2" />
+  </g>
+
+  <!-- Middle Card (Slightly Tilted) -->
+  <g transform="rotate(5 256 260)" filter="url(#shadow)">
+    <rect x="120" y="110" width="272" height="300" rx="24" fill="#EEF2FF" opacity="0.75" stroke="#C7D2FE" stroke-width="2" />
+  </g>
+
+  <!-- Front Main Card -->
+  <g filter="url(#shadow)">
+    <rect x="120" y="106" width="272" height="300" rx="24" fill="url(#cardGrad)" stroke="#FFFFFF" stroke-width="3" />
+    
+    <!-- Top Card Header Line -->
+    <rect x="156" y="146" width="80" height="12" rx="6" fill="#818CF8" />
+    <circle cx="356" cy="152" r="6" fill="#10B981" />
+
+    <!-- Center Retention Brain / Infinite Synapse Wave -->
+    <path d="M168 250 C180 210, 220 210, 240 250 C260 290, 300 290, 320 250 C332 225, 348 230, 350 250" 
+          fill="none" stroke="url(#bgGrad)" stroke-width="14" stroke-linecap="round" />
+    
+    <!-- Spaced Repetition Dots -->
+    <circle cx="168" cy="250" r="9" fill="#6366F1" />
+    <circle cx="240" cy="250" r="9" fill="#8B5CF6" />
+    <circle cx="320" cy="250" r="9" fill="#EC4899" />
+
+    <!-- Hint / Review bar lines -->
+    <rect x="160" y="318" width="192" height="8" rx="4" fill="#CBD5E1" />
+    <rect x="160" y="340" width="130" height="8" rx="4" fill="#E2E8F0" />
+    
+    <!-- FSRS Accent Pill -->
+    <rect x="290" y="336" width="62" height="18" rx="9" fill="#4F46E5" />
+    <circle cx="300" cy="345" r="3" fill="#34D399" />
+  </g>
+
+  <!-- Lightning Spark of Recall -->
+  <g transform="translate(320, 90) scale(1.1)">
+    <path d="M18 0 L32 20 L20 20 L28 40 L6 18 L16 18 Z" fill="#FBBF24" stroke="#D97706" stroke-width="2" stroke-linejoin="round" />
+  </g>
+</svg>
