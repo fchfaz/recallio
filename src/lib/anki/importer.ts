@@ -2,6 +2,7 @@ import { db } from '@/lib/db/database';
 import type { AnkiImportPreview, Deck, Note, Card, MediaItem, ImportHistory } from '@/types';
 
 export interface ImportResultSummary {
+  primaryDatabase: 'collection.anki21' | 'collection.anki2';
   decksImported: number;
   notesImported: number;
   cardsImported: number;
@@ -27,31 +28,36 @@ export async function executeAnkiImport(
   let mediaImported = 0;
   let skippedCards = 0;
 
-  // 1. Prepare decks
+  // 1. Prepare decks preserving subdeck hierarchy
   const decksToSave: Deck[] = [];
   for (const pDeck of activeDecks) {
-    const existing = await db.decks.get(pDeck.id);
-    if (!existing) {
-      decksToSave.push({
-        id: pDeck.id,
-        name: pDeck.name,
-        description: pDeck.description || `Imported from ${preview.filename}`,
-        settings: {
-          newCardsPerDay: 20,
-          maxReviewsPerDay: 100,
-          desiredRetention: 0.9,
-        },
-        createdAt: now,
-        updatedAt: now,
-      });
-      decksImported++;
-    } else {
-      decksImported++;
+    let parentId: string | undefined;
+    if (pDeck.name.includes('::')) {
+      const parentName = pDeck.name.substring(0, pDeck.name.lastIndexOf('::'));
+      const parentDeck = preview.decks.find((d) => d.name === parentName);
+      if (parentDeck) {
+        parentId = parentDeck.id;
+      }
     }
+
+    decksToSave.push({
+      id: pDeck.id,
+      name: pDeck.name,
+      description: pDeck.description || `Imported from ${preview.filename}`,
+      parentId,
+      settings: {
+        newCardsPerDay: 20,
+        maxReviewsPerDay: 100,
+        desiredRetention: 0.9,
+      },
+      createdAt: now,
+      updatedAt: now,
+    });
+    decksImported++;
   }
 
   onProgress?.(30, 'Saving decks and media assets...');
-  // 2. Save media items
+  // 2. Save media items preserving original filenames
   const mediaToSave: MediaItem[] = [];
   for (const [filename, dataUrl] of Object.entries(preview.rawMedia)) {
     const mediaId = `media_${filename.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
@@ -83,22 +89,17 @@ export async function executeAnkiImport(
     }
   }
 
-  onProgress?.(60, 'Saving notes and flashcards...');
-  // 4. Filter notes
+  onProgress?.(60, 'Saving notes with all 38+ fields preserved...');
+  // 4. Save notes preserving all fields and model metadata
   const notesToSave: Note[] = [];
   for (const rawNote of preview.rawNotes) {
-    const noteId = `anki_n_${rawNote.id}`;
-    if (selectedNoteIds.has(noteId)) {
-      const fieldValues = Object.values(rawNote.fieldsDict) as string[];
+    if (selectedNoteIds.has(rawNote.id)) {
       notesToSave.push({
-        id: noteId,
-        deckId: selectedDeckIds[0] || 'default',
-        modelType: 'basic',
-        fields: {
-          front: fieldValues[0] || '',
-          back: fieldValues[1] || '',
-          hint: fieldValues[2] || undefined,
-        },
+        id: rawNote.id,
+        deckId: rawNote.deckId,
+        modelType: rawNote.modelType,
+        modelName: rawNote.modelName,
+        fields: rawNote.fields, // ALL 38 fields preserved!
         tags: rawNote.tags || [],
         createdAt: now,
         updatedAt: now,
@@ -107,7 +108,7 @@ export async function executeAnkiImport(
     }
   }
 
-  onProgress?.(80, 'Writing data to local IndexedDB...');
+  onProgress?.(80, 'Writing data to IndexedDB storage...');
 
   await db.transaction('rw', db.decks, db.notes, db.cards, db.media, db.importHistory, async () => {
     if (decksToSave.length > 0) {
@@ -140,6 +141,7 @@ export async function executeAnkiImport(
   onProgress?.(100, 'Import finished!');
 
   return {
+    primaryDatabase: preview.primaryDatabase,
     decksImported,
     notesImported,
     cardsImported,

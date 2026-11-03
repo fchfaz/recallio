@@ -180,8 +180,8 @@ export async function exportDeckToAnki(deckId?: string): Promise<Blob> {
     const numId = nextNumericNoteId++;
     noteNumericIdMap.set(n.id, numId);
 
-    const fFront = n.fields.front || '';
-    const fBack = n.fields.back || '';
+    const fFront = n.fields.front || Object.values(n.fields)[0] || '';
+    const fBack = n.fields.back || Object.values(n.fields)[1] || '';
     const flds = `${fFront}\x1f${fBack}`;
     const sfld = fFront.replace(/<[^>]*>/g, '').slice(0, 30);
     const tagsStr = n.tags ? ` ${n.tags.join(' ')} ` : '';

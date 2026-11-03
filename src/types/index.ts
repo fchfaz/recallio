@@ -28,12 +28,9 @@ export interface Note {
   id: string;
   deckId: string;
   modelType: CardModelType;
-  fields: {
-    front: string;
-    back: string;
-    hint?: string;
-    extra?: string;
-  };
+  modelName?: string;
+  // All fields preserved from the original model (including all 38 fields of JP Mining Note)
+  fields: Record<string, string>;
   tags: string[];
   createdAt: number;
   updatedAt: number;
@@ -123,13 +120,19 @@ export interface AnkiParsedDeck {
 
 export interface AnkiImportPreview {
   filename: string;
+  primaryDatabase: 'collection.anki21' | 'collection.anki2';
   decks: AnkiParsedDeck[];
   totalNotes: number;
   totalCards: number;
+  noteTypeCount: number;
+  fieldsInNoteType: number;
+  templateCount: number;
   mediaCount: number;
+  mediaMappingEntries: number;
   warnings: string[];
+  diagnosticInfo?: Record<string, any>;
   rawNotes: any[];
-  rawCards: any[];
+  rawCards: Card[];
   rawMedia: Record<string, string>; // map filename -> base64
 }
 
